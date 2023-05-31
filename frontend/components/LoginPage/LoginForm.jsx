@@ -6,6 +6,7 @@ import axios from "axios";
 
 export default function LoginForm() {
 
+
     const [form, setForm] = useState({ username: "", password: "" });
     const toast = useToast();
 
@@ -15,6 +16,7 @@ export default function LoginForm() {
     };
 
     const onSubmit = () => {
+
         const {username, password} = form
         var form_data = new FormData();
         form_data.append('username', username);
@@ -40,7 +42,6 @@ export default function LoginForm() {
                 isClosable: true,
                 });
             });
-
     };
 
     return (
