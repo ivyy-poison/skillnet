@@ -47,17 +47,8 @@ export default function MobileNav(props) {
                 </Box>
                 
                 <HStack spacing={isLoggedIn ? 4 : 2}>
-                    {isLoggedIn ?  
-                        <>
-                            <NotificationBell/>
-                            <ProfileButton profilePic = {profilePic}/>
-                        </>
-                        :
-                        <>
-                            <LogInButton/>
-                            <SignUpButton/>    
-                        </> 
-                    }
+                    <NotificationBell/>
+                    <ProfileButton profilePic = {profilePic}/>
                 </HStack>
             </Flex>
 
