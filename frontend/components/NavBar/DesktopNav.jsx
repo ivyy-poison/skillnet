@@ -37,6 +37,7 @@ export default function DesktopNav (props) {
             <HStack spacing={isLoggedIn? 6 : 3}>
                 <NotificationBell/>
                 <ProfileButton profilePic={profilePic}/>
+
             </HStack>
         </Flex>
     );
