@@ -25,9 +25,14 @@ import { useRef } from 'react';
 import SideBar from '../SideBar/SideBar';
 
 
-export default function MobileNav(props: any) {
+interface MobileNavProps {
+    profilePic: string;
+    isLoggedIn: boolean;
+}   
+
+export default function MobileNav(props: MobileNavProps) {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const btnRef = useRef()
+    const btnRef = useRef(null)
     const { isLoggedIn=true, profilePic='' } = props;
     console.log(isLoggedIn + " is logged in?");
     return (

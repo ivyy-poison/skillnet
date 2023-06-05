@@ -1,14 +1,15 @@
 import { Box, Stack, FormControl, FormLabel, Input, Button, useColorModeValue, useToast } from '@chakra-ui/react';
 import ActionSection from './ActionSection';
-import React, { useState } from "react";
+import React, { useState, MouseEventHandler } from "react";
 import axios from "axios";
-// import { User } from "../../types"
+
 
 
 type User = {
     email: string;
     password: string;
 };
+
 export default function LoginForm() {
 
     const [form, setForm] = useState<User>({ email: "", password: "" });
@@ -19,7 +20,7 @@ export default function LoginForm() {
         setForm((prevForm) => ({ ...prevForm, [name]: value }));
     };
 
-    const onSubmit = () => {
+    const onSubmit: MouseEventHandler = () => {
         axios
             .post('fake-endpoint', form)
             .then((res) => {

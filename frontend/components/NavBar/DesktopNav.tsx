@@ -12,8 +12,12 @@ import React, { useState } from 'react';
 import ProfileButton from './ProfileButton';
 import NotificationBell from './NotificationBell';
 
+interface DesktopNavProps {
+    profilePic: string;
+    isLoggedIn: boolean;
+}
 
-export default function DesktopNav (props: any) {  
+export default function DesktopNav (props: DesktopNavProps) {  
     const { isLoggedIn = true, profilePic = '' } = props;
     console.log(isLoggedIn + " is logged in?");
     return (

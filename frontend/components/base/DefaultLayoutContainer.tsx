@@ -5,13 +5,17 @@ import {
 }   from '@chakra-ui/react';
 import NavBar from "../NavBar/NavBar"
 import SideBar from "../SideBar/SideBar";
-import React, { useEffect } from 'react';
+import React, { useEffect, ReactNode } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { loginRequest, loginSuccess, loginFailure } from '../../actions/userActions';
 import { RootState } from '../../reducers/rootReducer';
 
-export default function DefaultLayoutContainer({ children }: { children: React.ReactNode }) {
+interface DefaultLayoutContainerProps {
+    children: ReactNode;
+}
+
+export default function DefaultLayoutContainer({ children }: DefaultLayoutContainerProps) {
 
     const templateColumns = useBreakpointValue({ base: '1fr', lg: '20vw 3fr' });
     const templateAreas = useBreakpointValue({ base: `"header" "main"`, lg: `"header header" "nav main"` });

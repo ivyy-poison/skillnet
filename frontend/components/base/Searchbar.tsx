@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, ChangeEvent, MouseEvent } from 'react';
+import React, { useState, useRef, useEffect, ChangeEvent, MouseEvent, MouseEventHandler } from 'react';
 import {
   Box,
   Input,
@@ -12,12 +12,13 @@ import {
 
 function Searchbar() {
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [dropdownItems, setDropdownItems] = useState<any>([]);
+    const [dropdownItems, setDropdownItems] = useState<string[]>([]);
+    // Take note, at some point in time, this might change to useState<ReactNode[]>
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const dropdownRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        const handleOutsideClick: (event: MouseEvent) => void = (event: MouseEvent) => {
+        const handleOutsideClick: EventListener = (event: Event) => {
             if (
                 dropdownRef.current &&
                 !dropdownRef.current.contains(event.target as Node)
@@ -47,7 +48,7 @@ function Searchbar() {
     ];
 
     setDropdownItems(fetchedDropdownItems);
-    setShowDropdown(value && dropdownRef.current === document.activeElement);
+    setShowDropdown(value !== "" && dropdownRef.current === document.activeElement);
   };
 
   const handleItemClick = (item: string) => {
@@ -84,11 +85,11 @@ function Searchbar() {
                 >
                     {dropdownItems.map((item) => (
                         <ListItem
-                        key={item}
-                        px={4}
-                        py={2}
-                        _hover={{ bg: 'gray.100', cursor: 'pointer' }}
-                        onClick={() => handleItemClick(item)}
+                            key={item}
+                            px={4}
+                            py={2}
+                            _hover={{ bg: 'gray.100', cursor: 'pointer' }}
+                            onClick={() => handleItemClick(item)}
                         >
                         <Text>{item}</Text>
                         </ListItem>

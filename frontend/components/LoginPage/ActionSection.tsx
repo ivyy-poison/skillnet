@@ -2,7 +2,11 @@ import React, { MouseEventHandler } from 'react';
 import {Stack, FormControl, FormLabel, Input, Button, Checkbox} from '@chakra-ui/react';
 import SignUpSection from './SignUpSection';
 
-export default function ActionSection(onSubmit: any) {
+interface ActionSectionProps {
+    onSubmit: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+export default function ActionSection({onSubmit}: ActionSectionProps) {
     return (
         <Stack spacing={10}>
             <Checkbox>Remember me</Checkbox>
