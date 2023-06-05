@@ -9,7 +9,7 @@ import {
 import ProjectDisplayCard from './ProjectDisplayCard';
 import ProjectDisplayModal from './ProjectDisplayModal';
 
-export default function ProjectDisplay (props) {
+export default function ProjectDisplay (props: any) {
     const { 
         projects = [ 
             {
@@ -60,7 +60,7 @@ export default function ProjectDisplay (props) {
                 gap={6} 
                 mb={4} 
             >
-                {displayProjects.map((project, index) => (
+                {displayProjects.map((project: any, index: any) => (
                     <Box 
                         key={index}
                         width={{ base: "100%", sm: "auto" }}

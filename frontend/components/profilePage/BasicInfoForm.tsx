@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 
-export default function BasicInfoForm(props) {
+export default function BasicInfoForm(props: any) {
     const { form, handleInputChange } = props;
     return (
         <>

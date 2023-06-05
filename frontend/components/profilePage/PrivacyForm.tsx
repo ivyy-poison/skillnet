@@ -15,7 +15,7 @@ import {
     Switch
 } from '@chakra-ui/react';
 
-export default function PrivacyForm(props) {
+export default function PrivacyForm(props: any) {
     const { handleSwitchChange, form } = props;
     return (
         <>

@@ -24,11 +24,21 @@ import { CloseIcon, CheckIcon } from '@chakra-ui/icons';
 import BasicInfoForm from './BasicInfoForm';
 import PrivacyForm from './PrivacyForm';
 
-export default function EditProfileModal(props) {
+interface FormType {
+    name: string;
+    title: string;
+    about: string;
+    privacySettings: {
+      [key: string]: boolean;
+    };
+}
+  
+
+export default function EditProfileModal(props: any) {
     const { handleOpen, handleClose, isOpen, setIsOpen } = props;
     
     const [activeTab, setActiveTab] = useState(0);
-    const [form, setForm] = useState({
+    const [form, setForm] = useState<FormType>({
         name: "",
         title: "",
         about: "",
@@ -40,7 +50,7 @@ export default function EditProfileModal(props) {
         }
     });
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: any) => {
         const { name, value } = e.target;
         setForm(prevState => ({
             ...prevState,
@@ -48,7 +58,7 @@ export default function EditProfileModal(props) {
         }));
     };
 
-    const handleSwitchChange = (name) => {
+    const handleSwitchChange = (name: string) => {
         setForm(prevState => ({
             ...prevState,
             privacySettings: {
@@ -58,7 +68,7 @@ export default function EditProfileModal(props) {
         }));
     };
 
-    const handleTabChange = (index) => {
+    const handleTabChange = (index: any) => {
         setActiveTab(index);
     };
 

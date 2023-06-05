@@ -8,7 +8,7 @@ import ProjectDisplay from './ProjectDisplay';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function ProfileInfo({username}) {
+export default function ProfileInfo({username} : any) {
     const [user, setUser] = useState(null);
     
     useEffect(() => {

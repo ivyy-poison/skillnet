@@ -10,7 +10,7 @@ import {
 import EditPicBtn from './EditPicBtn';
 import EditInfoBtn from './EditInfoBtn';
 
-export default function BasicInfo(user) {
+export default function BasicInfo(user: any) {
     const { 
         name = "ivan tan", 
         username = "ivyy-poison", 

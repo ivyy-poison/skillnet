@@ -6,10 +6,10 @@ import {
 import NavBar from "../NavBar/NavBar"
 import SideBar from "../SideBar/SideBar";
 import React, { useEffect, ReactNode } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { loginRequest, loginSuccess, loginFailure } from '../../actions/userActions';
-import { RootState } from '../../reducers/rootReducer';
+// import { loginRequest, loginSuccess, loginFailure } from '../../actions/userActions';
+// import { RootState } from '../../reducers/rootReducer';
 
 interface DefaultLayoutContainerProps {
     children: ReactNode;
@@ -19,34 +19,36 @@ export default function DefaultLayoutContainer({ children }: DefaultLayoutContai
 
     const templateColumns = useBreakpointValue({ base: '1fr', lg: '20vw 3fr' });
     const templateAreas = useBreakpointValue({ base: `"header" "main"`, lg: `"header header" "nav main"` });
-    const dispatch = useDispatch();
-    const userRedux = useSelector((state: RootState) => state.user);
-    const {loading, isLoggedIn, user, error} = userRedux;
+    const isLoggedIn = false;
+    const user = null;
+    // const dispatch = useDispatch();
+    // const userRedux = useSelector((state: RootState) => state.user);
+    // const {loading, isLoggedIn, user, error} = userRedux;
 
-    useEffect(() => {
-        dispatch(loginRequest());
-        // url for session id validation
-        console.log('API call to check if user is logged in');
-        const url = '';
-        const sessionId = sessionStorage.getItem('sessionId');
-        if (sessionId) {
-        axios.post(url, {}, {
-            headers: {
-            Authorization: `Bearer ${sessionId}`
-            }
-        })
-        .then(response => {
-            const user = response.data;
-            dispatch(loginSuccess(user));
-        })
-        .catch(error => {
-            dispatch(loginFailure(error.message));
-            sessionStorage.removeItem('sessionId');
-        });
-        } else {
-            dispatch(loginFailure(new Error('No session ID found')));
-        }
-    }, []);
+    // useEffect(() => {
+    //     dispatch(loginRequest());
+    //     // url for session id validation
+    //     console.log('API call to check if user is logged in');
+    //     const url = '';
+    //     const sessionId = sessionStorage.getItem('sessionId');
+    //     if (sessionId) {
+    //     axios.post(url, {}, {
+    //         headers: {
+    //         Authorization: `Bearer ${sessionId}`
+    //         }
+    //     })
+    //     .then(response => {
+    //         const user = response.data;
+    //         dispatch(loginSuccess(user));
+    //     })
+    //     .catch(error => {
+    //         dispatch(loginFailure(error.message));
+    //         sessionStorage.removeItem('sessionId');
+    //     });
+    //     } else {
+    //         dispatch(loginFailure(new Error('No session ID found')));
+    //     }
+    // }, []);
 
     return (
         <Grid

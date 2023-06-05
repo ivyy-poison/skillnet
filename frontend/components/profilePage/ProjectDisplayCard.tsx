@@ -10,7 +10,7 @@ import {
     Flex
 } from "@chakra-ui/react";
 
-export default function ProjectDisplayCard(project) {
+export default function ProjectDisplayCard(project: any) {
     const { logo, name, category, backdrop } = project;
     return (
         <Card maxW='300px' h="400px">

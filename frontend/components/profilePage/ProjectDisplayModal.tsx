@@ -12,7 +12,7 @@ import {
 import ProjectDisplayCard from './ProjectDisplayCard';
 
 
-export default function ProjectDisplay (props) {
+export default function ProjectDisplay (props: any) {
     const { isOpen, onClose, projects } = props;
     return (
         <Modal 
@@ -30,7 +30,7 @@ export default function ProjectDisplay (props) {
                         gap={6} 
                         mb={4}
                     >
-                        {projects.map((project, index) => (
+                        {projects.map((project: any, index: any) => (
                             <Box key={index}>
                                 <ProjectDisplayCard
                                     logo={project.logo}

@@ -20,7 +20,7 @@ import React from 'react';
 export default function NavBar(props: any) {
     const { user, isLoggedIn } = props;
     const isDesktop = useBreakpointValue({ base: false, lg: true });
-    const { username="test", profilePic="" } = user;
+    const { username="test", profilePic="" } = user || {};
     return (
         <Box>
             <Flex py={2} px={4} borderBottom={1} align={'center'}>
