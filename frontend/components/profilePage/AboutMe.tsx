@@ -7,7 +7,7 @@ import {
   Button
 } from '@chakra-ui/react';
 
-export default function AboutMe({ user }) {
+export default function AboutMe({ user }: any) {
     const [showMore, setShowMore] = useState(false);
     const [height, setHeight] = useState("200px");
     const { about = 'Description not available' } = user || {};
