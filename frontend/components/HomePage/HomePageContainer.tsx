@@ -18,8 +18,11 @@ export default function HomePageContainer() {
                 py={{ base: 20, md: 36 }}>
                 <HomePageHeader />
                 <CallToActionButtons />        
+
             </Stack>
         </Container>
     </>
   );
+
 }
+
