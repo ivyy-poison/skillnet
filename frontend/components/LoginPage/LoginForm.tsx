@@ -48,6 +48,7 @@ export default function LoginForm() {
                     isClosable: true,
                 });
             });
+
     };
 
     return (
@@ -59,7 +60,6 @@ export default function LoginForm() {
             w={{ base: '90vw', md: '60vw', lg: '30vw' }}
         >
             <Stack spacing={4}>
-
                 <FormControl id="username">
                     <FormLabel>username</FormLabel>
                     <Input
