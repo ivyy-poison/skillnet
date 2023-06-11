@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"errors"
+	"io"
 	"net/http"
 
+	"cloud.google.com/go/storage"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/ryanozx/skillnet/database"
@@ -14,7 +16,8 @@ import (
 const postNotFoundMessage = "Post not found"
 
 type APIEnv struct {
-	DB *gorm.DB
+	DB          *gorm.DB
+	GoogleCloud *storage.Client
 }
 
 func (a *APIEnv) GetPosts(context *gin.Context) {
@@ -78,6 +81,53 @@ func (a *APIEnv) UpdatePost(context *gin.Context) {
 		return
 	}
 	context.JSON(http.StatusOK, post)
+}
+
+func (a *APIEnv) UpdateUserPicture(context *gin.Context) {
+	// userID := context.Param("userID")
+	file, err := context.FormFile("file")
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Open the file
+	openedFile, err := file.Open()
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	defer openedFile.Close()
+
+	bucket := a.GoogleCloud.Bucket("skillnet-posts")
+
+	// Create a new writer in the bucket
+	ctx := context.Request.Context()
+	writer := bucket.Object("test").NewWriter(ctx)
+
+	// Copy the file to the bucket
+	_, err = io.Copy(writer, openedFile)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Close the writer
+	if err := writer.Close(); err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Get the URL of the new object
+	// attrs, err := writer.Attrs()
+	// if err != nil {
+	// 	context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	// 	return
+	// }
+	attrs := writer.Attrs()
+	url := attrs.MediaLink
+
+	context.JSON(http.StatusOK, gin.H{"url": url})
 }
 
 func (a *APIEnv) DeletePost(context *gin.Context) {

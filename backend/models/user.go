@@ -34,7 +34,7 @@ type UserView struct {
 
 // User is the database representation of a user object
 type User struct {
-	ID              string   `gorm:"type:uuid;<-:create;default:uuid_generate_v4()" json:"-"` // UserID will never be revealed to the client; it will never change
+	ID              string   `gorm:"type:uuid;<-:create;" json:"-"` // UserID will never be revealed to the client; it will never change
 	Profile         UserView `gorm:"embedded"`
 	UserCredentials `gorm:"embedded"`
 	Email           string

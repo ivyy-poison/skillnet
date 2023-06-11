@@ -1,19 +1,23 @@
 package main
 
 import (
+	"context"
 	"log"
 
+	"cloud.google.com/go/storage"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	"github.com/ryanozx/skillnet/database"
 	"github.com/ryanozx/skillnet/helpers"
+	"google.golang.org/api/option"
 	"gorm.io/gorm"
 )
 
 type serverConfig struct {
-	db     *gorm.DB
-	store  redis.Store
-	router *gin.Engine
+	db          *gorm.DB
+	store       redis.Store
+	router      *gin.Engine
+	googleCloud *storage.Client
 }
 
 func main() {
@@ -31,6 +35,7 @@ func initialiseProdServer() *serverConfig {
 		db:     db,
 	}
 	server.setupRedis()
+	server.setupGoogleCloud()
 	return &server
 }
 
@@ -43,6 +48,17 @@ func (server *serverConfig) setupRedis() {
 		log.Fatal(err.Error())
 	}
 	server.store = store
+}
+
+func (s *serverConfig) setupGoogleCloud() {
+	ctx := context.Background()
+	env := helpers.RetrieveGoogleCloudEnv()
+
+	client, err := storage.NewClient(ctx, option.WithCredentialsFile(env.Filepath))
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	s.googleCloud = client
 }
 
 func (server *serverConfig) runRouter() {

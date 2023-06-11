@@ -18,7 +18,8 @@ func (server *serverConfig) setupRoutes() {
 	server.router.Use(sessions.Sessions("skillnet", server.store))
 
 	apiEnv := &controllers.APIEnv{
-		DB: server.db,
+		DB:          server.db,
+		GoogleCloud: server.googleCloud,
 	}
 	public := server.router.Group("/")
 	registerPublicRoutes(public, apiEnv)
@@ -35,6 +36,7 @@ func registerPublicRoutes(routerGroup *gin.RouterGroup, api *controllers.APIEnv)
 	routerGroup.GET("/posts/:id", api.GetPostByID)
 	routerGroup.POST("/signup", api.CreateUser)
 	routerGroup.GET("/users/:username", api.GetProfile)
+	routerGroup.POST("/testupload", api.UpdateUserPicture)
 }
 
 func registerPrivateRoutes(routerGroup *gin.RouterGroup, api *controllers.APIEnv) {
@@ -42,6 +44,7 @@ func registerPrivateRoutes(routerGroup *gin.RouterGroup, api *controllers.APIEnv
 	routerGroup.PATCH("/posts/:id", api.UpdatePost)
 	routerGroup.DELETE("/posts/:id", api.DeletePost)
 	routerGroup.PATCH("/user", api.UpdateUser)
+	routerGroup.PATCH("/user/picture", api.UpdateUserPicture)
 	routerGroup.GET("/test", func(context *gin.Context) {
 		context.IndentedJSON(http.StatusOK, gin.H{
 			"message": "authorised",
