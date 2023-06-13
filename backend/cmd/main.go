@@ -29,7 +29,7 @@ type serverConfig struct {
 	db          *gorm.DB
 	store       redis.Store
 	router      *gin.Engine
-	googleCloud *storage.Client
+	GoogleCloud *storage.Client
 }
 
 // Returns a server configuration with the production database (as defined
@@ -67,13 +67,13 @@ func (s *serverConfig) setupGoogleCloud() {
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
 	}
-	s.googleCloud = client
+	s.GoogleCloud = client
 }
 
 func (server *serverConfig) runRouter() {
 	env := helpers.RetrieveWebAppEnv()
 	routerAddress := env.Address()
-	err := s.router.Run(routerAddress)
+	err := server.router.Run(routerAddress)
 	if err != nil {
 		log.Fatalln(err.Error())
 		return

@@ -8,7 +8,6 @@ import (
 	"io"
 	"net/http"
 
-	"cloud.google.com/go/storage"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/ryanozx/skillnet/database"
@@ -20,11 +19,6 @@ import (
 const (
 	postNotFoundMessage = "Post not found"
 )
-
-type APIEnv struct {
-	DB          *gorm.DB
-	GoogleCloud *storage.Client
-}
 
 func (a *APIEnv) InitialisePostHandler() {
 	a.PostDBHandler = &database.PostDB{
@@ -102,11 +96,7 @@ func (a *APIEnv) GetPostByID(ctx *gin.Context) {
 	helpers.OutputData(ctx, post)
 }
 
-func (a *APIEnv) UpdatePost(ctx *gin.Context) {
-	postID := helpers.GetPostIdFromContext(ctx)
-	var inputUpdate models.Post
-
-func (a *APIEnv) UpdateUserPicture(context *gin.Context) {
+func (a *APIEnv) PostUserPicture(context *gin.Context) {
 	// userID := context.Param("userID")
 	file, err := context.FormFile("file")
 	if err != nil {
@@ -114,7 +104,6 @@ func (a *APIEnv) UpdateUserPicture(context *gin.Context) {
 		return
 	}
 
-	// Open the file
 	openedFile, err := file.Open()
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -122,41 +111,43 @@ func (a *APIEnv) UpdateUserPicture(context *gin.Context) {
 	}
 	defer openedFile.Close()
 
-	bucket := a.GoogleCloud.Bucket("skillnet-posts")
-
-	// Create a new writer in the bucket
+	bucket := a.GoogleCloud.Bucket("skillnet-profile-pictures")
 	ctx := context.Request.Context()
-	writer := bucket.Object("test").NewWriter(ctx)
+	fileName := "test" + "-pfp.jpeg"
+	writer := bucket.Object(fileName).NewWriter(ctx)
 
-	// Copy the file to the bucket
 	_, err = io.Copy(writer, openedFile)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Close the writer
 	if err := writer.Close(); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Get the URL of the new object
-	// attrs, err := writer.Attrs()
-	// if err != nil {
+	attrs := writer.Attrs()
+	url := attrs.MediaLink
+
+	// var inputUpdate models.User
+	// inputUpdate.ProfilePic = url
+	// user, err := database.UpdateUser(a.DB, &inputUpdate, userID)
+	// if errors.Is(err, gorm.ErrRecordNotFound) {
+	// 	context.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+	// 	return
+	// } else if err != nil {
 	// 	context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	// 	return
 	// }
-	attrs := writer.Attrs()
-	url := attrs.MediaLink
 
 	context.JSON(http.StatusOK, gin.H{"url": url})
 }
 
-func (a *APIEnv) DeletePost(context *gin.Context) {
-	postID := context.Param("id")
-	userID := context.Param("userID")
-	err := database.DeletePost(a.DB, postID, userID)
+func (a *APIEnv) UpdatePost(ctx *gin.Context) {
+	postID := helpers.GetPostIdFromContext(ctx)
+	var inputUpdate models.Post
+
 	// If unable to bind JSON in request to the Post object, return status
 	// code 400 Bad Request
 	if err := helpers.BindInput(ctx, &inputUpdate); err != nil {
