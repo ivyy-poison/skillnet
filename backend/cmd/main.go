@@ -1,3 +1,6 @@
+/*
+Contains functions to set up the server and run it.
+*/
 package main
 
 import (
@@ -13,13 +16,6 @@ import (
 	"gorm.io/gorm"
 )
 
-type serverConfig struct {
-	db          *gorm.DB
-	store       redis.Store
-	router      *gin.Engine
-	googleCloud *storage.Client
-}
-
 func main() {
 	serverConfig := initialiseProdServer()
 	serverConfig.setupRoutes()
@@ -27,19 +23,32 @@ func main() {
 	log.Println("Setup complete!")
 }
 
+// serverConfig contains the essentials to run the backend - a router,
+// a Redis database for fast reads, and a database for persistent data
+type serverConfig struct {
+	db          *gorm.DB
+	store       redis.Store
+	router      *gin.Engine
+	googleCloud *storage.Client
+}
+
+// Returns a server configuration with the production database (as defined
+// by environmental variables) set as the database
 func initialiseProdServer() *serverConfig {
 	router := gin.Default()
 	db := database.ConnectProdDatabase()
+	store := setupRedis()
 	server := serverConfig{
-		router: router,
 		db:     db,
+		router: router,
+		store:  store,
 	}
-	server.setupRedis()
 	server.setupGoogleCloud()
 	return &server
 }
 
-func (server *serverConfig) setupRedis() {
+// Sets up the Redis store from environmental variables
+func setupRedis() redis.Store {
 	env := helpers.RetrieveRedisEnv()
 	redisAddress := env.Address()
 	const redisNetwork = "tcp"
@@ -47,7 +56,7 @@ func (server *serverConfig) setupRedis() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	server.store = store
+	return store
 }
 
 func (s *serverConfig) setupGoogleCloud() {
@@ -64,7 +73,7 @@ func (s *serverConfig) setupGoogleCloud() {
 func (server *serverConfig) runRouter() {
 	env := helpers.RetrieveWebAppEnv()
 	routerAddress := env.Address()
-	err := server.router.Run(routerAddress)
+	err := s.router.Run(routerAddress)
 	if err != nil {
 		log.Fatalln(err.Error())
 		return
