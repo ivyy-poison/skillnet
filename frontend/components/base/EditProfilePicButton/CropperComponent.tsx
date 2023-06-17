@@ -7,7 +7,7 @@ import { User } from '../../../types';
 
 interface CropperComponentProps {
     profilePic?: string;
-    setUser: (prevUser: any) => void;
+    setUser: React.Dispatch<React.SetStateAction<User>>;
 }
 
 const CropperComponent: React.FC<CropperComponentProps> = ({profilePic, setUser}) => {

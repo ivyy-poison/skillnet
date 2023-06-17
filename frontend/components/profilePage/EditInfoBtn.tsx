@@ -19,7 +19,7 @@ import EditInfoModal from './EditInfoModal';
 import { User } from '../../types';
 
 interface EditInfoBtnProps {
-    setUser: (prevUser: User) => void;
+    setUser: React.Dispatch<React.SetStateAction<User>>;
 }
 
 export default function EditInfoBtn ({setUser}: EditInfoBtnProps) {
