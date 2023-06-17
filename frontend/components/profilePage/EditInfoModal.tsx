@@ -28,7 +28,7 @@ interface FormType {
 }
 
 interface EditProfileModalProps {
-    setUser: (prevUser: User) => void;
+    setUser: React.Dispatch<React.SetStateAction<User>>;
     handleOpen: () => void;
     handleClose: () => void;
     isOpen: boolean;
