@@ -5,7 +5,7 @@ import { User } from '../../types';
 
 interface InfoSectionProps {
     user: User;
-    setUser?: (prevUser: User) => void;
+    setUser?: React.Dispatch<React.SetStateAction<User>>;
 }
 
 export default function InfoSection({user, setUser}: InfoSectionProps) {

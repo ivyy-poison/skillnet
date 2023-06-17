@@ -17,7 +17,7 @@ interface BasicInfoProps {
     username: string;
     title?: string;
     profilePic?: string;
-    setUser?: (prevUser: User) => void;
+    setUser?: React.Dispatch<React.SetStateAction<User>>;
 }
 
 export default function BasicInfo(props: BasicInfoProps) {
