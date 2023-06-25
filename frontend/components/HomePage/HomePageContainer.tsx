@@ -9,6 +9,7 @@ import { HomePageHeader } from './HomePageHeader';
 import { preventAuthAccess } from '../../withAuthRedirect';
 
 export default preventAuthAccess(function HomePageContainer() {
+    console.log(process.env.BACKEND_BASE_URL)
     return (
         <>
             <Container maxW={'3xl'}>
