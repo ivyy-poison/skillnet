@@ -10,6 +10,7 @@ import { preventAuthAccess } from '../../withAuthRedirect';
 
 export default preventAuthAccess(function HomePageContainer() {
     console.log(process.env.BACKEND_BASE_URL)
+    console.log(process.env.NEXT_PUBLIC_BACKEND_BASE_URL)
     console.log(process.env)
     return (
         <>
